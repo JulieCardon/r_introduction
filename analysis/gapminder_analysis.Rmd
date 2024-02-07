@@ -1,0 +1,121 @@
+---
+title: "Gapminder Analysis"
+author: "Julie Cardon"
+date: "2024-02-07"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+(The above chunk determines whether or not chunks, messages, etc. will
+be shown-- can set width and height of figures, where they're being
+saved, etc.) In this document I will analyze how life expectancy has
+changed over time (include purpose of document) html is nice because it
+has continuous scroll (no page breaks, good for big docs) to put r code
+into document, put in chunks (title goes in curly brackets, can put in
+header as well) document and console can use different working
+directories, use knit directory to fix we used the settings button to
+remove output from document (see in console- you can choose) \# Reading
+in gapminder data (header has hashtag and space before)
+
+```{r reading-in-data}
+gapminder_df <- read.csv("data/gapminder_data.csv")
+
+```
+
+## A smaller header
+
+### An even smaller header
+
+###### A very small header
+
+Lists: make with asterisk and a space
+
+-   list item 1
+-   list item 2
+
+Make hyphen lists: - Hyphen list - Hyphen list
+
+Numbered lists: 1. Number one 2. Number two \* Add 4 spaces for a sub
+list 3. Number 3 Put a space between header and list
+
+We make text **bold with two asterisks** or *italics with one asterisk*
+
+We can also insert greek letters and equations with $\mu$ or $\Delta$
+
+We can make hyperlinks with square brackets for word we want linked,
+followed by parenthesis around the link like
+[hyperlinks](https://pad.carpentries.org/Spring2024-BIOMI6300)
+
+# Calculating summary statistics
+
+how many observations, and the median echo=FALSE within the chunk title
+won't show the code in the document
+
+```{r calculating-median-pop, echo=FALSE}
+med_pop <- median(gapminder_df$pop)
+num_obs <- nrow(gapminder_df)
+```
+
+As shown above, the median population was 7,023,596
+
+Over `r num_obs` observations, the median population was
+`r round(med_pop/10e5, 3)` million people. notice in-line r codes, and
+how that shows up in the knitted text.
+
+#Plotting life Expectancy Over the Years
+
+```{r line-graph, warning = FALSE}
+library(ggplot2) #(the hashtag makes it so r doesn't read the code)
+ggplot(gapminder_df, aes(x = year, y = lifeExp, group = country, color = continent)) + geom_line() + scale_y_log10() + scale_x_continuous(limits = c(1997, 2007))
+```
+
+warnings can be silenced in title of code chunk \# Make a line plot \#
+log scale y axis \# Bonus: Change the theme
+
+always have the library loading step in your r chunk eval = false (shows
+code, but doesn't run it, output = false, run code but not show)
+
+#Plotting Population Distribution
+
+```{r Histogram, message = FALSE, fig.width=10}
+ggplot(gapminder_df, aes(x=pop)) + geom_histogram()
+```
+
+message in r- nothing went wrong, but you should know... (message is not
+useful to reader, so you can put in message = false so it doesn't print
+the message)
+
+YAML is the program that makes the header (can add options to html)
+
+toc gives us a table of contents
+
+code_folding allows user to choose to show the code
+
+You can use the visual view to work like in a word processor and to
+insert tables
+
++---------------------+----------------------+----------------------+
+| Col1                | Col2                 | Col3                 |
++=====================+======================+======================+
+| put some stuff here | but it looks weird   | you can insert       |
+|                     | in markdown          | tables as an image   |
+|                     |                      | instead and they'll  |
+|                     |                      | be in your image     |
+|                     |                      | folder               |
++---------------------+----------------------+----------------------+
+|                     |                      |                      |
++---------------------+----------------------+----------------------+
+|                     |                      |                      |
++---------------------+----------------------+----------------------+
+any code can be used within an R markdown document, like python and bash
